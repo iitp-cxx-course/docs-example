@@ -1,0 +1,3 @@
+[submodule "standardese"]
+	path = external/standardese
+	url = git@github.com:standardese/standardese.git
