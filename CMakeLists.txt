@@ -13,9 +13,6 @@ set_project_warnings(default)
 enable_testing()
 add_subdirectory(external/doctest)
 include(external/doctest/doctest.cmake)
-add_subdirectory(external/standardese EXCLUDE_FROM_ALL)
-set(STANDARDESE_TOOL standardese_tool)
-find_package(standardese REQUIRED HINTS external/standardese)
 add_subdirectory(src)
 
 find_package(Doxygen)
@@ -32,7 +29,13 @@ add_custom_command(
           -Dbreathe_projects.example=${CMAKE_CURRENT_BINARY_DIR}/xml
   COMMENT "Generates sphinx documentation")
 
+option(USE_STANDARDESE "use standardese" OFF)
+if(USE_STANDARDESE)
+add_subdirectory(external/standardese EXCLUDE_FROM_ALL)
+set(STANDARDESE_TOOL standardese_tool)
+find_package(standardese REQUIRED HINTS external/standardese)
 # add_custom_target(doc2 ALL COMMAND standardese_tool src)
 # generates a custom target that will run standardese to generate the documentation
 standardese_generate(proj CONFIG standardese.ini
                      INPUT src/lib.hpp)
+endif()
